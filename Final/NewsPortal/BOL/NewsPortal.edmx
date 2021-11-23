@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="newsportalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CText" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Fk_User_Id" Type="int" Nullable="false" />
+          <Property Name="Fk_News_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="News">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Category" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="Fk_User_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="React">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fk_Users_Id" Type="int" Nullable="false" />
+          <Property Name="Fk_News_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Comment_Comment">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Fk_User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_News">
+          <End Role="News" Type="Self.News" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="News">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Fk_News_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_News_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="News" Type="Self.News" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="News">
+              <PropertyRef Name="Fk_User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_React_News">
+          <End Role="News" Type="Self.News" Multiplicity="1" />
+          <End Role="React" Type="Self.React" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="News">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="React">
+              <PropertyRef Name="Fk_News_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_React_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="React" Type="Self.React" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="React">
+              <PropertyRef Name="Fk_Users_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="newsportalModelStoreContainer">
+          <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="News" EntityType="Self.News" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="React" EntityType="Self.React" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Comment_Comment" Association="Self.FK_Comment_Comment">
+            <End Role="User" EntitySet="User" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_News" Association="Self.FK_Comment_News">
+            <End Role="News" EntitySet="News" />
+            <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_News_User" Association="Self.FK_News_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="News" EntitySet="News" />
+          </AssociationSet>
+          <AssociationSet Name="FK_React_News" Association="Self.FK_React_News">
+            <End Role="News" EntitySet="News" />
+            <End Role="React" EntitySet="React" />
+          </AssociationSet>
+          <AssociationSet Name="FK_React_User" Association="Self.FK_React_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="React" EntitySet="React" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="newsportalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Fk_User_Id" Type="Int32" Nullable="false" />
+          <Property Name="Fk_News_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Comment_Comment" FromRole="Comment" ToRole="User" />
+          <NavigationProperty Name="News" Relationship="Self.FK_Comment_News" FromRole="Comment" ToRole="News" />
+        </EntityType>
+        <EntityType Name="News">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Fk_User_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK_Comment_News" FromRole="News" ToRole="Comment" />
+          <NavigationProperty Name="User" Relationship="Self.FK_News_User" FromRole="News" ToRole="User" />
+          <NavigationProperty Name="Reacts" Relationship="Self.FK_React_News" FromRole="News" ToRole="React" />
+        </EntityType>
+        <EntityType Name="React">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fk_Users_Id" Type="Int32" Nullable="false" />
+          <Property Name="Fk_News_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="News" Relationship="Self.FK_React_News" FromRole="React" ToRole="News" />
+          <NavigationProperty Name="User" Relationship="Self.FK_React_User" FromRole="React" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK_Comment_Comment" FromRole="User" ToRole="Comment" />
+          <NavigationProperty Name="News" Relationship="Self.FK_News_User" FromRole="User" ToRole="News" />
+          <NavigationProperty Name="Reacts" Relationship="Self.FK_React_User" FromRole="User" ToRole="React" />
+        </EntityType>
+        <Association Name="FK_Comment_Comment">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Fk_User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_News">
+          <End Role="News" Type="Self.News" Multiplicity="1" />
+          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="News">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Fk_News_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_News_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="News" Type="Self.News" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="News">
+              <PropertyRef Name="Fk_User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_React_News">
+          <End Role="News" Type="Self.News" Multiplicity="1" />
+          <End Role="React" Type="Self.React" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="News">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="React">
+              <PropertyRef Name="Fk_News_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_React_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="React" Type="Self.React" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="React">
+              <PropertyRef Name="Fk_Users_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NewsDbContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Comments" EntityType="Self.Comment" />
+          <EntitySet Name="News" EntityType="Self.News" />
+          <EntitySet Name="Reacts" EntityType="Self.React" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_Comment_Comment" Association="Self.FK_Comment_Comment">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_News" Association="Self.FK_Comment_News">
+            <End Role="News" EntitySet="News" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_News_User" Association="Self.FK_News_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="News" EntitySet="News" />
+          </AssociationSet>
+          <AssociationSet Name="FK_React_News" Association="Self.FK_React_News">
+            <End Role="News" EntitySet="News" />
+            <End Role="React" EntitySet="Reacts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_React_User" Association="Self.FK_React_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="React" EntitySet="Reacts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="newsportalModelStoreContainer" CdmEntityContainer="NewsDbContext">
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="newsportalModel.Comment">
+              <MappingFragment StoreEntitySet="Comment">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CText" ColumnName="CText" />
+                <ScalarProperty Name="Fk_User_Id" ColumnName="Fk_User_Id" />
+                <ScalarProperty Name="Fk_News_Id" ColumnName="Fk_News_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="News">
+            <EntityTypeMapping TypeName="newsportalModel.News">
+              <MappingFragment StoreEntitySet="News">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="Fk_User_Id" ColumnName="Fk_User_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reacts">
+            <EntityTypeMapping TypeName="newsportalModel.React">
+              <MappingFragment StoreEntitySet="React">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Fk_Users_Id" ColumnName="Fk_Users_Id" />
+                <ScalarProperty Name="Fk_News_Id" ColumnName="Fk_News_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="newsportalModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
